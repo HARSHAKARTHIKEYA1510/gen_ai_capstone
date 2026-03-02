@@ -1,50 +1,41 @@
-Project 5: Customer Churn Prediction & Agentic Retention Strategy
-From Predictive Analytics to Intelligent Intervention
 Project Overview
 
-This project presents the design and implementation of an AI-driven customer analytics system that predicts telecom customer churn and evolves toward an intelligent, agent-based retention strategist.
+This project builds an AI-driven customer analytics system to predict telecom customer churn and evolve into an intelligent agent-based retention strategist.
 
-Customer churn significantly impacts revenue in subscription-based industries. This system leverages classical machine learning techniques to:
+Customer churn directly impacts revenue in subscription-based industries. This system:
 
-Predict churn probability using historical behavioral data
+Predicts churn probability using historical behavioral data
 
-Identify key churn drivers
+Identifies key churn drivers
 
-Provide structured retention strategies based on risk levels
+Generates structured retention strategies based on risk level
 
-The project is structured into two milestones:
+The project is divided into two milestones:
 
-Milestone 1: Classical machine learning techniques applied to historical telecom data for churn prediction.
+Milestone 1: Classical Machine Learning pipeline for churn prediction
 
-Milestone 2: Extension into an agentic AI system capable of reasoning about churn risk, retrieving best practices using RAG (Retrieval-Augmented Generation), and generating structured intervention plans.
+Milestone 2: Agentic AI system with reasoning + RAG-based strategy generation
 
-Constraints & Requirements
-
-Team Size: 3–4 Students
-
-API Budget: Free Tier Only (Open-source models / Free APIs)
-
-Agent Framework (M2): LangGraph
-
-Hosting: Mandatory (Streamlit Cloud / Hugging Face Spaces / Render)
-
-Technology Stack
-Component	Technology
-ML Models (M1)	Logistic Regression, Decision Tree (Scikit-Learn)
+🛠 Technology Stack
+Layer	Technology
+ML Models	Logistic Regression, Decision Tree (Scikit-Learn)
 Data Processing	Pandas, NumPy, StandardScaler
-Evaluation Metrics	Accuracy, Precision, Recall, F1-Score, ROC-AUC
-UI Framework	Streamlit
-Agent Framework (M2)	LangGraph (Planned)
-Vector Database (M2)	Chroma / FAISS (Planned)
-LLMs (M2)	Open-source / Free-tier APIs (Planned)
-Dataset Description
+Evaluation	Accuracy, Precision, Recall, F1-Score, ROC-AUC
+UI	Streamlit
+Agent Framework (M2)	LangGraph
+Vector DB (M2)	Chroma / FAISS
+LLMs (M2)	Open-source / Free-tier APIs
+📂 Dataset Information
 
-Dataset: Telco Customer Churn Dataset
+Dataset: Telco Customer Churn
+
 Records: 7,032 customers
-Features: 30 (after encoding)
-Target Variable: Churn (Yes/No → 1/0)
 
-Key Features:
+Features: 30 (after encoding)
+
+Target: Churn (Yes/No → 1/0)
+
+Key Features
 
 Tenure
 
@@ -62,48 +53,42 @@ Senior Citizen Status
 
 Service Subscriptions
 
-Milestones & Deliverables
-Milestone 1: ML-Based Churn Prediction (Mid-Sem)
+🎯 Milestone 1 — ML-Based Churn Prediction
 Objective
 
-Identify customers at risk using historical behavioral data through a classical machine learning pipeline (no LLMs).
+Build a classical ML pipeline (no LLMs) to identify high-risk customers.
 
-System Architecture (M1)
-Raw Dataset
-     ↓
-Data Cleaning & Preprocessing
-     ↓
-One-Hot Encoding
-     ↓
-Feature Scaling (StandardScaler)
-     ↓
-Train-Test Split (80/20)
-     ↓
-Model Training
-     ↓
-Evaluation & UI Deployment (Streamlit)
-Model Implementation
+System Architecture
 
-Two classification models were implemented and evaluated:
+Raw Data
+→ Cleaning & Preprocessing
+→ One-Hot Encoding
+→ Feature Scaling (StandardScaler)
+→ Train-Test Split (80/20)
+→ Model Training
+→ Evaluation
+→ Streamlit Deployment
 
-1. Logistic Regression (Final Selected Model)
+Models Implemented
+1️⃣ Logistic Regression (Final Model)
 
 Accuracy: 78.7%
 
-Better recall & ROC-AUC compared to Decision Tree
+Strong Recall & ROC-AUC
 
-Provides probability outputs for churn risk scoring
+Outputs churn probability
 
-2. Decision Tree
+2️⃣ Decision Tree
 
 Accuracy: 72.4%
 
 Lower generalization performance
 
-Final Model Selected: Logistic Regression
-Reason: Superior overall performance and better recall for churn class.
+✅ Selected Model: Logistic Regression
 
-Model Evaluation Metrics
+Reason: Better overall performance and stronger recall for churn class.
+
+📈 Evaluation Metrics
 
 Accuracy
 
@@ -115,13 +100,13 @@ Recall
 
 F1-Score
 
-ROC-AUC Score
+ROC-AUC
 
-Special emphasis was placed on Recall for the churn class, since false negatives represent lost customers.
+Special focus was placed on Recall for churn class (minimizing false negatives).
 
-Working Application (Streamlit UI)
+💻 Streamlit Application
 
-The system includes an interactive interface that allows:
+The deployed UI allows:
 
 Manual customer input
 
@@ -129,82 +114,77 @@ Real-time churn probability prediction
 
 Risk categorization:
 
-Low Risk
+🟢 Low Risk
 
-Medium Risk
+🟡 Medium Risk
 
-High Risk
+🔴 High Risk
 
 Structured retention recommendations
 
-The application loads:
+Loaded assets:
 
-Trained Logistic Regression model (.pkl)
+logistic_model.pkl
 
-Feature scaler
+scaler.pkl
 
-Feature column alignment file
+feature_columns.pkl
 
-Milestone 2: Agentic AI Retention Assistant (End-Sem)
+🤖 Milestone 2 — Agentic AI Retention Assistant
 Objective
 
-Extend the system into an intelligent agent that:
+Transform the ML model into an intelligent retention strategist that:
 
-Reasons about churn risk
+Reasons about churn probability
 
-Retrieves retention best practices using RAG
+Retrieves best practices via RAG
 
 Generates structured intervention plans
 
-Operates as a multi-state workflow using LangGraph
+Operates via LangGraph workflow
 
 Planned Agent Workflow
-Input Customer Profile
-        ↓
-Risk Assessment Node
-        ↓
-Knowledge Retrieval (RAG)
-        ↓
-Strategy Planning Node
-        ↓
-Structured Retention Report Generation
-Key Deliverables (M2)
 
-Publicly deployed application
+Customer Profile
+→ Risk Assessment Node
+→ Knowledge Retrieval (RAG)
+→ Strategy Planning Node
+→ Structured Retention Report
 
-Agent workflow documentation (States & Nodes)
+📦 Deliverables (End-Sem)
 
-Structured retention report generation
+Public deployment
+
+Agent workflow documentation
+
+Structured retention reports
 
 Complete GitHub repository
 
 5-minute demo video
 
-Retention Strategy Logic (Current Rule-Based Prototype)
+🧠 Current Retention Logic (Rule-Based Prototype)
+🔴 High Risk (>70%)
 
-For Milestone 1, retention suggestions are rule-driven:
+Discounted long-term contract
 
-High Risk (>70%)
-
-Offer discounted long-term contract
-
-Provide loyalty benefits
+Loyalty benefits
 
 Assign customer success representative
 
-Medium Risk (40–70%)
+🟡 Medium Risk (40–70%)
 
-Personalized promotional offers
+Personalized offers
 
 Engagement follow-ups
 
-Low Risk (<40%)
+🟢 Low Risk (<40%)
 
 Standard monitoring
 
-This logic will evolve into an intelligent agent-based reasoning system in Milestone 2.
+This will evolve into a fully agentic reasoning system in Milestone 2.
 
-Project Structure
+📁 Project Structure
 GEN_AI_CAPSTONE/
 │
 ├── app.py
@@ -218,42 +198,37 @@ GEN_AI_CAPSTONE/
 ├── requirements.txt
 ├── README.md
 ├── .gitignore
-Installation & Setup
-1. Clone Repository
+⚙️ Installation & Setup
+1️⃣ Clone Repository
 git clone https://github.com/YOUR_USERNAME/gen_ai_capstone.git
 cd gen_ai_capstone
-
-Hosted on GitHub
-
-2. Create Virtual Environment
+2️⃣ Create Virtual Environment
 python -m venv venv
 source venv/bin/activate   # Mac/Linux
-3. Install Dependencies
+3️⃣ Install Dependencies
 pip install -r requirements.txt
-4. Run Application
+4️⃣ Run Application
 streamlit run app.py
-Deployment
+🌍 Deployment (Planned)
 
-The application will be publicly hosted using:
+Streamlit Cloud
 
-Streamlit Cloud (Planned)
+Hugging Face Spaces
 
-Hugging Face Spaces (Optional)
+Render
 
-Render (Optional)
-
-Evaluation Criteria
-Phase	Weight	Criteria
-Mid-Sem	25%	ML technique application, Feature Engineering, UI Usability, Evaluation Metrics
-End-Sem	30%	Reasoning quality, RAG implementation, Output clarity, Deployment success
-Future Improvements
+📊 Evaluation Criteria
+Phase	Weight	Focus
+Mid-Sem	25%	ML pipeline, Feature Engineering, UI, Metrics
+End-Sem	30%	Agent reasoning, RAG implementation, Deployment
+🔮 Future Improvements
 
 Hyperparameter tuning
 
-Feature importance visualization dashboard
+Feature importance visualization
 
-SHAP explainability integration
+SHAP explainability
 
-Real-time business analytics dashboard
+Real-time analytics dashboard
 
-Agentic multi-step reasoning workflow (LangGraph)
+Multi-step agent reasoning workflow
