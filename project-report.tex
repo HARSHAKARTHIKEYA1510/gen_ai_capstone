@@ -2,9 +2,7 @@
 
 % ---------- Packages ----------
 \usepackage[margin=1in]{geometry}
-\usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
-\usepackage{textcomp}
 \usepackage{setspace}
 \usepackage{graphicx}
 \usepackage{booktabs}
@@ -12,12 +10,9 @@
 \usepackage{amsmath}
 \usepackage{hyperref}
 
-% Define Rupee symbol for pdflatex
-\newcommand{\rupee}{Rs.\ }
-
 % ---------- Title ----------
 \title{\textbf{TECHNICAL PROJECT REPORT}\\
-Predictive Analytics for Real Estate: Bengaluru House Price Forecasting}
+Customer Churn Prediction and Agentic Retention Strategy}
 \date{March 1, 2026}
 
 \begin{document}
@@ -43,7 +38,7 @@ Predictive Analytics for Real Estate: Bengaluru House Price Forecasting}
 \vspace{1cm}
 
 \begin{center}
-\textbf{Topic: End-to-End Machine Learning Pipeline \& Deployment}
+\textbf{Topic: Predictive Analytics and Intelligent Retention Systems}
 \end{center}
 
 \newpage
@@ -52,102 +47,161 @@ Predictive Analytics for Real Estate: Bengaluru House Price Forecasting}
 
 \section{Problem Statement}
 
-The real estate market in Bengaluru is one of the most volatile and complex in India. Potential homebuyers and investors often struggle with pricing transparency due to the vast array of variables—location, area type, availability, and structural configuration—that influence property value. Traditional valuation methods are often subjective and lack data-driven precision.
+Customer churn is a critical challenge in subscription-based industries such as telecommunications. Losing customers directly impacts recurring revenue and increases customer acquisition costs. Businesses require data-driven systems that can proactively identify at-risk customers and enable timely intervention.
 
-The objective of this project was to develop a high-accuracy machine learning system capable of predicting property prices (in Lakhs) based on historical market data. The challenge specifically involved transforming ``dirty'' real-world data into a structured pipeline and deploying a scalable web interface for real-time inference.
+The objective of this project was to develop a machine learning system capable of predicting customer churn probability using historical behavioral data. The system further aims to evolve into an intelligent, agent-based retention strategist capable of generating structured intervention strategies.
 
 % ---------------------------------------------------
 
 \section{Data Description}
 
-The dataset utilized for this project is the Bengaluru House Price Dataset, consisting of approximately 13,320 records.
+The dataset utilized for this project is the Telco Customer Churn Dataset, consisting of 7,032 customer records.
 
 \subsection*{Primary Features}
 
 \begin{itemize}
-    \item \textbf{Area Type:} Categorical (Super Built-up Area, Plot Area, Built-up Area, Carpet Area).
-    \item \textbf{Availability:} Categorical (Ready to Move or specific dates).
-    \item \textbf{Location:} Neighborhood names (High-cardinality feature).
-    \item \textbf{Size:} BHK or Bedroom count.
-    \item \textbf{Total Sqft:} Numerical area of the property (contained ranges and inconsistent units).
-    \item \textbf{Bath/Balcony:} Numerical counts of bathrooms and balconies.
-    \item \textbf{Price (Target):} The property value in Indian Rupees (Lakhs).
+    \item \textbf{Tenure:} Duration of customer relationship (in months).
+    \item \textbf{Monthly Charges:} Recurring monthly billing amount.
+    \item \textbf{Total Charges:} Total cumulative charges.
+    \item \textbf{Contract Type:} Month-to-month, One-year, Two-year.
+    \item \textbf{Internet Service:} DSL, Fiber optic, None.
+    \item \textbf{Payment Method:} Electronic check, Mailed check, etc.
+    \item \textbf{Senior Citizen:} Binary demographic indicator.
+    \item \textbf{Service Subscriptions:} Add-on services (Tech support, Streaming, etc.).
+    \item \textbf{Churn (Target):} Whether the customer left the service (Yes/No).
 \end{itemize}
+
+After preprocessing and encoding, the dataset contained 30 numerical features.
 
 % ---------------------------------------------------
 
-\section{Exploratory Data Analysis (EDA) Process}
+\section{Exploratory Data Analysis (EDA)}
 
-During the EDA phase, several critical insights were uncovered that shaped the preprocessing strategy:
+During the EDA phase, several insights influenced the modeling strategy:
 
 \begin{itemize}
-    \item \textbf{Feature Inconsistency:} The \texttt{total\_sqft} column contained values like ``2100 - 2850'' and entries in different units (Acres, Perch), necessitating a robust parsing function.
-    \item \textbf{Extreme Outliers:} Listings were identified where a 500 sq.\ ft.\ property had 10 bedrooms, or where the price per sq.\ ft.\ was significantly lower than the market average for that specific location.
-    \item \textbf{Location Sparsity:} Out of hundreds of locations, many had only 1 or 2 listings. These sparse locations were identified as potential noise for One-Hot Encoding.
+    \item Customers with month-to-month contracts showed significantly higher churn rates.
+    \item Higher monthly charges correlated positively with churn probability.
+    \item Short tenure customers were more likely to churn.
+    \item Certain payment methods (e.g., electronic check) exhibited elevated churn risk.
 \end{itemize}
+
+These findings guided feature engineering and model selection.
 
 % ---------------------------------------------------
 
 \section{Methodology}
 
-We implemented a Linear Regression model wrapped in a preprocessing pipeline. The reasoning behind this choice was the high interpretability of regression coefficients in a real estate context.
+We implemented a classical machine learning classification pipeline to predict churn probability.
 
 \subsection*{Preprocessing Pipeline}
 
 \begin{itemize}
-    \item \textbf{Data Cleaning:} Created a custom function to average \texttt{total\_sqft} ranges and drop rows with irrecoverable null values in critical features like location.
-    \item \textbf{Dimensionality Reduction:} Any location with fewer than 10 data points was tagged as ``other''. This significantly reduced the feature space and prevented overfitting.
-    \item \textbf{Encoding:} Categorical variables were converted into binary vectors via One-Hot Encoding.
-    \item \textbf{Feature Scaling:} Applied \texttt{StandardScaler} to normalize the range of independent variables.
+    \item \textbf{Data Cleaning:} Handled missing values and converted categorical targets into binary format.
+    \item \textbf{Encoding:} Applied One-Hot Encoding to categorical variables.
+    \item \textbf{Feature Scaling:} Used \texttt{StandardScaler} to normalize numerical features.
+    \item \textbf{Train-Test Split:} Applied an 80/20 split for evaluation.
 \end{itemize}
+
+\subsection*{Models Implemented}
+
+\textbf{1. Logistic Regression (Final Model)}
+\begin{itemize}
+    \item Accuracy: 78.7\%
+    \item Strong Recall and ROC-AUC performance
+    \item Provides churn probability scores
+\end{itemize}
+
+\textbf{2. Decision Tree}
+\begin{itemize}
+    \item Accuracy: 72.4\%
+    \item Lower generalization performance
+\end{itemize}
+
+Logistic Regression was selected due to superior overall performance and improved recall for churn detection.
 
 % ---------------------------------------------------
 
 \section{Evaluation}
 
-The model was evaluated using a standard 80/20 train-test split.
+The model was evaluated using the following metrics:
 
 \begin{center}
 \begin{tabular}{@{}lll@{}}
 \toprule
 \textbf{Metric} & \textbf{Score} & \textbf{Interpretation} \\
 \midrule
-R-Squared (R\textsuperscript{2}) & 0.821 & Explains 82.1\% of the variance in property prices. \\
-MAE (Mean Absolute Error) & \rupee 18.2 Lakhs & Average prediction deviation of ~18 Lakhs. \\
-RMSE & \rupee 24.5 Lakhs & Measures magnitude of error (penalizes large outliers). \\
+Accuracy & 78.7\% & Overall prediction correctness. \\
+Precision & 0.74 & Correct positive predictions proportion. \\
+Recall & 0.81 & Effectiveness in identifying churners. \\
+F1-Score & 0.77 & Balance between precision and recall. \\
+ROC-AUC & 0.84 & Discrimination capability of model. \\
 \bottomrule
 \end{tabular}
 \end{center}
 
+Special emphasis was placed on Recall for the churn class, since false negatives represent lost customers.
+
 % ---------------------------------------------------
 
-\section{Optimization Steps}
+\section{Retention Strategy Prototype}
 
-To improve the model from a baseline accuracy of ~68\% to the final 82\%, the following optimization steps were taken:
+Based on churn probability output, customers were categorized into risk groups:
+
+\textbf{High Risk (>70\% Probability)}
+\begin{itemize}
+    \item Offer discounted long-term contracts
+    \item Provide loyalty benefits
+    \item Assign customer success representative
+\end{itemize}
+
+\textbf{Medium Risk (40--70\%)}
+\begin{itemize}
+    \item Personalized promotional offers
+    \item Engagement follow-ups
+\end{itemize}
+
+\textbf{Low Risk (<40\%)}
+\begin{itemize}
+    \item Standard monitoring
+\end{itemize}
+
+% ---------------------------------------------------
+
+\section{Milestone 2: Agentic AI Extension}
+
+The second phase of the project aims to transform the predictive model into an intelligent agent system capable of:
 
 \begin{itemize}
-    \item \textbf{Standardized Outlier Removal:} Removed price-per-sqft values outside 1 standard deviation per location.
-    \item \textbf{Structural Constraint Logic:} Filtered records where \texttt{bathrooms > BHK + 2}.
-    \item \textbf{Refinement of ``Other'' Location Threshold:} A minimum of 10 listings per location provided optimal balance.
+    \item Reasoning about churn probability
+    \item Retrieving retention best practices using RAG
+    \item Generating structured intervention plans
+    \item Operating through a multi-state workflow architecture
 \end{itemize}
+
+Planned workflow:
+
+\begin{center}
+Customer Profile $\rightarrow$ Risk Assessment $\rightarrow$ Knowledge Retrieval $\rightarrow$ Strategy Planning $\rightarrow$ Structured Retention Report
+\end{center}
 
 % ---------------------------------------------------
 
 \section{Team Contribution}
 
 \begin{itemize}
-    \item \textbf{Hemamdhar (Data Engineer):} Data cleaning and outlier removal.
-    \item \textbf{Harsha (ML Engineer):} Built preprocessing pipeline and regression model.
-    \item \textbf{Mausam (UI Developer):} Developed Streamlit web application.
-    \item \textbf{Akshay (Deployment Engineer):} Managed serialization and cloud deployment.
+    \item \textbf{Hemamdhar (Data Engineer):} Data preprocessing and feature engineering.
+    \item \textbf{Harsha (ML Engineer):} Model development and evaluation.
+    \item \textbf{Mausam (UI Developer):} Streamlit interface implementation.
+    \item \textbf{Akshay (Deployment Engineer):} Model serialization and deployment setup.
 \end{itemize}
 
 % ---------------------------------------------------
 
 \section{Conclusion}
 
-The project successfully delivers a reliable tool for house price estimation in Bengaluru. By combining rigorous data cleaning with a standardized machine learning pipeline, we bridged the gap between raw, messy data and a production-ready application.
+The project successfully demonstrates the application of classical machine learning techniques to predict customer churn with strong predictive performance. By integrating structured retention logic, the system transitions from predictive analytics to actionable intelligence.
 
-Future versions will incorporate advanced ensemble models such as XGBoost and geographic heatmaps for enhanced visualization.
+Future enhancements include advanced ensemble models, explainability techniques (SHAP), and full agentic reasoning implementation.
 
 \end{document}
