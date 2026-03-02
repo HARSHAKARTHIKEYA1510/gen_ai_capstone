@@ -1,0 +1,153 @@
+\documentclass[12pt,a4paper]{article}
+
+% ---------- Packages ----------
+\usepackage[margin=1in]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage{setspace}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{amsmath}
+\usepackage{hyperref}
+
+% Define Rupee symbol for pdflatex
+\newcommand{\rupee}{Rs.\ }
+
+% ---------- Title ----------
+\title{\textbf{TECHNICAL PROJECT REPORT}\\
+Predictive Analytics for Real Estate: Bengaluru House Price Forecasting}
+\date{March 1, 2026}
+
+\begin{document}
+
+\maketitle
+\thispagestyle{empty}
+
+\vspace{1cm}
+
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+\textbf{Student ID} & \textbf{Full Name} \\
+\hline
+2401020008 & Akshay Y \\
+2401010313 & Harsha Karthikeya \\
+2401010137 & Dakarapu Hemamdhar Nath \\
+2401010266 & Mausam Kumar Dwivedi \\
+\hline
+\end{tabular}
+\end{center}
+
+\vspace{1cm}
+
+\begin{center}
+\textbf{Topic: End-to-End Machine Learning Pipeline \& Deployment}
+\end{center}
+
+\newpage
+
+% ---------------------------------------------------
+
+\section{Problem Statement}
+
+The real estate market in Bengaluru is one of the most volatile and complex in India. Potential homebuyers and investors often struggle with pricing transparency due to the vast array of variables—location, area type, availability, and structural configuration—that influence property value. Traditional valuation methods are often subjective and lack data-driven precision.
+
+The objective of this project was to develop a high-accuracy machine learning system capable of predicting property prices (in Lakhs) based on historical market data. The challenge specifically involved transforming ``dirty'' real-world data into a structured pipeline and deploying a scalable web interface for real-time inference.
+
+% ---------------------------------------------------
+
+\section{Data Description}
+
+The dataset utilized for this project is the Bengaluru House Price Dataset, consisting of approximately 13,320 records.
+
+\subsection*{Primary Features}
+
+\begin{itemize}
+    \item \textbf{Area Type:} Categorical (Super Built-up Area, Plot Area, Built-up Area, Carpet Area).
+    \item \textbf{Availability:} Categorical (Ready to Move or specific dates).
+    \item \textbf{Location:} Neighborhood names (High-cardinality feature).
+    \item \textbf{Size:} BHK or Bedroom count.
+    \item \textbf{Total Sqft:} Numerical area of the property (contained ranges and inconsistent units).
+    \item \textbf{Bath/Balcony:} Numerical counts of bathrooms and balconies.
+    \item \textbf{Price (Target):} The property value in Indian Rupees (Lakhs).
+\end{itemize}
+
+% ---------------------------------------------------
+
+\section{Exploratory Data Analysis (EDA) Process}
+
+During the EDA phase, several critical insights were uncovered that shaped the preprocessing strategy:
+
+\begin{itemize}
+    \item \textbf{Feature Inconsistency:} The \texttt{total\_sqft} column contained values like ``2100 - 2850'' and entries in different units (Acres, Perch), necessitating a robust parsing function.
+    \item \textbf{Extreme Outliers:} Listings were identified where a 500 sq.\ ft.\ property had 10 bedrooms, or where the price per sq.\ ft.\ was significantly lower than the market average for that specific location.
+    \item \textbf{Location Sparsity:} Out of hundreds of locations, many had only 1 or 2 listings. These sparse locations were identified as potential noise for One-Hot Encoding.
+\end{itemize}
+
+% ---------------------------------------------------
+
+\section{Methodology}
+
+We implemented a Linear Regression model wrapped in a preprocessing pipeline. The reasoning behind this choice was the high interpretability of regression coefficients in a real estate context.
+
+\subsection*{Preprocessing Pipeline}
+
+\begin{itemize}
+    \item \textbf{Data Cleaning:} Created a custom function to average \texttt{total\_sqft} ranges and drop rows with irrecoverable null values in critical features like location.
+    \item \textbf{Dimensionality Reduction:} Any location with fewer than 10 data points was tagged as ``other''. This significantly reduced the feature space and prevented overfitting.
+    \item \textbf{Encoding:} Categorical variables were converted into binary vectors via One-Hot Encoding.
+    \item \textbf{Feature Scaling:} Applied \texttt{StandardScaler} to normalize the range of independent variables.
+\end{itemize}
+
+% ---------------------------------------------------
+
+\section{Evaluation}
+
+The model was evaluated using a standard 80/20 train-test split.
+
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+\textbf{Metric} & \textbf{Score} & \textbf{Interpretation} \\
+\midrule
+R-Squared (R\textsuperscript{2}) & 0.821 & Explains 82.1\% of the variance in property prices. \\
+MAE (Mean Absolute Error) & \rupee 18.2 Lakhs & Average prediction deviation of ~18 Lakhs. \\
+RMSE & \rupee 24.5 Lakhs & Measures magnitude of error (penalizes large outliers). \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+% ---------------------------------------------------
+
+\section{Optimization Steps}
+
+To improve the model from a baseline accuracy of ~68\% to the final 82\%, the following optimization steps were taken:
+
+\begin{itemize}
+    \item \textbf{Standardized Outlier Removal:} Removed price-per-sqft values outside 1 standard deviation per location.
+    \item \textbf{Structural Constraint Logic:} Filtered records where \texttt{bathrooms > BHK + 2}.
+    \item \textbf{Refinement of ``Other'' Location Threshold:} A minimum of 10 listings per location provided optimal balance.
+\end{itemize}
+
+% ---------------------------------------------------
+
+\section{Team Contribution}
+
+\begin{itemize}
+    \item \textbf{Hemamdhar (Data Engineer):} Data cleaning and outlier removal.
+    \item \textbf{Harsha (ML Engineer):} Built preprocessing pipeline and regression model.
+    \item \textbf{Mausam (UI Developer):} Developed Streamlit web application.
+    \item \textbf{Akshay (Deployment Engineer):} Managed serialization and cloud deployment.
+\end{itemize}
+
+% ---------------------------------------------------
+
+\section{Conclusion}
+
+The project successfully delivers a reliable tool for house price estimation in Bengaluru. By combining rigorous data cleaning with a standardized machine learning pipeline, we bridged the gap between raw, messy data and a production-ready application.
+
+Future versions will incorporate advanced ensemble models such as XGBoost and geographic heatmaps for enhanced visualization.
+
+\end{document}
